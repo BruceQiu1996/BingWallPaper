@@ -1,12 +1,13 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BingWallPaper.Server.Database;
+using BingWallPaper.Server.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 using Serilog;
+using System.Reflection;
 
 namespace BingWallPaper.Server
 {
@@ -17,6 +18,7 @@ namespace BingWallPaper.Server
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>((hcontext, builder) =>
             {
+                builder.AddApplicationContainer(Assembly.GetExecutingAssembly());
             });
 
             builder.Host.ConfigureServices((hostContext, services) =>
@@ -31,9 +33,19 @@ namespace BingWallPaper.Server
                                .AllowAnyHeader();
                     });
                 });
+                services.AddHostedService<BingWallPaperCrawDaliyService>();
                 services.AddEfCoreContext(hostContext.Configuration);
                 services.AddControllers();
                 services.AddEndpointsApiExplorer();
+                services.AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "bingwallpaper",
+                        Description = "bingwallpaper v1版本接口"
+                    });
+                });
             }).UseSerilog((context, logger) =>
             {
                 logger.WriteTo.Console();
@@ -46,19 +58,6 @@ namespace BingWallPaper.Server
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseFileServer(new FileServerOptions()
-            {
-                FileProvider = new PhysicalFileProvider(app.Configuration.GetSection("FileStorage:AvatarImagesLocation").Value!),
-                RequestPath = new PathString("/api/avatars"),
-                EnableDirectoryBrowsing = false
-            });
-
-            app.UseFileServer(new FileServerOptions()
-            {
-                FileProvider = new PhysicalFileProvider(app.Configuration.GetSection("FileStorage:RecordImagesLocation").Value!),
-                RequestPath = new PathString("/api/record/images"),
-                EnableDirectoryBrowsing = false
-            });
 
             app.UseStaticFiles(new StaticFileOptions()
             {

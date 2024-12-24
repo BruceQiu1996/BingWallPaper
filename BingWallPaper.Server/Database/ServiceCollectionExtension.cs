@@ -10,7 +10,7 @@ namespace BingWallPaper.Server.Database
         {
             var mysqlConfig = configuration.GetSection("Mysql").Get<MysqlOptions>();
             var serverVersion = new MariaDbServerVersion(new Version(8, 0, 29));
-            services.AddDbContext<DbContext, BingWallPaperContext>(options =>
+            services.AddDbContext<DbContext, BingwallpaperContext>(options =>
             {
                 options.UseMySql(mysqlConfig.ConnectionString, serverVersion, optionsBuilder =>
                 {

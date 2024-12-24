@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingWallPaper.WPF", "BingWa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingWallPaper.Server", "BingWallPaper.Server\BingWallPaper.Server.csproj", "{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingWallPaper.Common", "BingWallPaper.Common\BingWallPaper.Common.csproj", "{7A085B77-3B7A-46BA-8981-B3273A44BD4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A085B77-3B7A-46BA-8981-B3273A44BD4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A085B77-3B7A-46BA-8981-B3273A44BD4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A085B77-3B7A-46BA-8981-B3273A44BD4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A085B77-3B7A-46BA-8981-B3273A44BD4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

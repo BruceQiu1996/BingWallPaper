@@ -5,13 +5,13 @@ using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace BingWallPaper.Server.Database;
 
-public partial class BingWallPaperContext : DbContext
+public partial class BingwallpaperContext : DbContext
 {
-    public BingWallPaperContext()
+    public BingwallpaperContext()
     {
     }
 
-    public BingWallPaperContext(DbContextOptions<BingWallPaperContext> options)
+    public BingwallpaperContext(DbContextOptions<BingwallpaperContext> options)
         : base(options)
     {
     }
@@ -33,11 +33,8 @@ public partial class BingWallPaperContext : DbContext
             entity.ToTable("wallpaper");
 
             entity.Property(e => e.Id).HasMaxLength(50);
-            entity.Property(e => e.Author).HasMaxLength(255);
-            entity.Property(e => e.Desc).HasMaxLength(500);
-            entity.Property(e => e._4k)
-                .HasMaxLength(255)
-                .HasColumnName("4K");
+            entity.Property(e => e.Desc).HasMaxLength(5000);
+            entity.Property(e => e.UrlBase).HasMaxLength(255);
         });
 
         modelBuilder.Entity<WallpaperCn>(entity =>
@@ -47,11 +44,8 @@ public partial class BingWallPaperContext : DbContext
             entity.ToTable("wallpaper_cn");
 
             entity.Property(e => e.Id).HasMaxLength(50);
-            entity.Property(e => e.Author).HasMaxLength(255);
-            entity.Property(e => e.Desc).HasMaxLength(500);
-            entity.Property(e => e._4k)
-                .HasMaxLength(255)
-                .HasColumnName("4K");
+            entity.Property(e => e.Desc).HasMaxLength(5000);
+            entity.Property(e => e.UrlBase).HasMaxLength(255);
         });
 
         OnModelCreatingPartial(modelBuilder);
