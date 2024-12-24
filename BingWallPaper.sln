@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingWallPaper.WPF", "BingWallPaper.WPF\BingWallPaper.WPF.csproj", "{90953E36-B48F-4B2B-9381-5B993E7C28EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingWallPaper.WPF", "BingWallPaper.WPF\BingWallPaper.WPF.csproj", "{90953E36-B48F-4B2B-9381-5B993E7C28EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingWallPaper.Server", "BingWallPaper.Server\BingWallPaper.Server.csproj", "{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{90953E36-B48F-4B2B-9381-5B993E7C28EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90953E36-B48F-4B2B-9381-5B993E7C28EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90953E36-B48F-4B2B-9381-5B993E7C28EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D2419D8-1C8C-49E3-BAC0-B4488C2AFF0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
