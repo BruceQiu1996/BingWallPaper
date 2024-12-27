@@ -1,6 +1,7 @@
 ﻿using BingWallPaper.Server.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,12 +11,14 @@ namespace BingWallPaper.Server
     {
         private readonly DateTime? _LastCrawTime = null;
         private readonly BingwallpaperContext _bingwallpaperContext;
+        private readonly ILogger<BingWallPaperCrawDaliyService> _logger;
         private readonly HttpClient _httpClient;
         private readonly string _cnUrl = "https://global.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&setmkt=zh-CN";
         private readonly string _usUrl = "https://global.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&setmkt=en-US";
         private readonly string _hostPrefix = "https://cn.bing.com";
-        public BingWallPaperCrawDaliyService(BingwallpaperContext bingwallpaperContext)
+        public BingWallPaperCrawDaliyService(BingwallpaperContext bingwallpaperContext, ILogger<BingWallPaperCrawDaliyService> logger)
         {
+            _logger = logger;
             _bingwallpaperContext = bingwallpaperContext;
             _httpClient = new HttpClient();
         }
@@ -26,35 +29,65 @@ namespace BingWallPaper.Server
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    if (DateTime.Now.Hour == 17)
-
+                    if (DateTime.Now.Hour == 11) //每天下午13点更新数据
                     {
-                        try
+                        int i = 0;
+                        while (i < 3)
                         {
-                            var cnDate = await (await _httpClient.GetAsync(_cnUrl)).Content.ReadAsStringAsync();
-                            var json = JsonSerializer.Deserialize<BingJson>(cnDate);
-                            if (json != null && json.Images != null)
+                            try
                             {
-                                if (json.Images.Count >= 1)
+                                var cnDate = await (await _httpClient.GetAsync(_cnUrl)).Content.ReadAsStringAsync();
+                                var json = JsonSerializer.Deserialize<BingJson>(cnDate);
+                                if (json != null && json.Images != null)
                                 {
-                                    var image = json.Images[0];
-                                    DateOnly date = DateOnly.ParseExact(image.StartDate,"yyyyMMdd");
-                                    if (_bingwallpaperContext.WallpaperCns.FirstOrDefaultAsync(x => x.Date.Value == date) == null)
+                                    if (json.Images.Count >= 1)
                                     {
-                                        await _bingwallpaperContext.WallpaperCns.AddAsync(new WallpaperCn()
+                                        var image = json.Images[0];
+                                        DateOnly date = DateOnly.ParseExact(image.StartDate, "yyyyMMdd");
+                                        if (await _bingwallpaperContext.WallpaperCns.FirstOrDefaultAsync(x => x.Date.Value == date) == null)
                                         {
-                                            Id = Guid.NewGuid().ToString(),
-                                            UrlBase = Path.Combine(_hostPrefix, image.UrlBase),
-                                            Desc = image.Copyright,
-                                            Date = DateOnly.Parse(image.StartDate)
-                                        });
+                                            await _bingwallpaperContext.WallpaperCns.AddAsync(new WallpaperCn()
+                                            {
+                                                Id = Guid.NewGuid().ToString(),
+                                                UrlBase = $"{_hostPrefix}{image.UrlBase}",
+                                                Desc = image.Copyright,
+                                                Date = date
+                                            });
+                                        }
                                     }
                                 }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
 
+                                var usDate = await (await _httpClient.GetAsync(_usUrl)).Content.ReadAsStringAsync();
+                                var json1 = JsonSerializer.Deserialize<BingJson>(usDate);
+                                if (json1 != null && json1.Images != null)
+                                {
+                                    if (json1.Images.Count >= 1)
+                                    {
+                                        var image = json1.Images[0];
+                                        DateOnly date = DateOnly.ParseExact(image.StartDate, "yyyyMMdd");
+                                        if (await _bingwallpaperContext.Wallpapers.FirstOrDefaultAsync(x => x.Date.Value == date) == null)
+                                        {
+                                            await _bingwallpaperContext.Wallpapers.AddAsync(new Wallpaper()
+                                            {
+                                                Id = Guid.NewGuid().ToString(),
+                                                UrlBase = $"{_hostPrefix}{image.UrlBase}",
+                                                Desc = image.Copyright,
+                                                Date = date
+                                            });
+                                        }
+                                    }
+                                }
+
+                                await _bingwallpaperContext.SaveChangesAsync();
+
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                _logger.LogError(ex.ToString());
+                                i++;
+                                continue;
+                            }
                         }
                     }
 

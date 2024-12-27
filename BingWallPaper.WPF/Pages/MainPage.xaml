@@ -4,11 +4,60 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:BingWallPaper.WPF.Pages"
+      xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:hc="https://handyorg.github.io/handycontrol"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="MainPage">
-
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Loaded">
+            <behaviors:InvokeCommandAction Command="{Binding LoadAsyncCommand}"></behaviors:InvokeCommandAction>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
     <Grid>
-        
+        <ScrollViewer Grid.Row="1" Margin="10" VerticalScrollBarVisibility="Visible">
+            <ListBox ItemsSource="{Binding PaperViewModels,UpdateSourceTrigger=PropertyChanged}" 
+                     BorderThickness="0" 
+                     Style="{StaticResource WrapPanelHorizontalListBox}"
+                     ScrollViewer.CanContentScroll="True"
+                     ScrollViewer.IsDeferredScrollingEnabled="True"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                     PreviewMouseWheel="ListView_PreviewMouseWheel">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="OverridesDefaultStyle" Value="True" />
+                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                        <Setter Property="Height" Value="250"></Setter>
+                        <Setter Property="Width" Value="280"></Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <hc:Card BorderThickness="0" Effect="{DynamicResource EffectShadow2}" Margin="10">
+                                        <Border CornerRadius="4,4,0,0" Width="280" Height="180">
+                                            <Image Source="{Binding ImageSource,UpdateSourceTrigger=PropertyChanged}"></Image>
+                                        </Border>
+                                        <hc:Card.Footer>
+                                            <StackPanel Margin="5">
+                                                <TextBlock TextWrapping="Wrap"  
+                                                           Style="{DynamicResource TextBlockDefaultPrimary}"
+                                                           Text="{Binding Desc}" 
+                           HorizontalAlignment="Left"/>
+                                                <TextBlock TextWrapping="NoWrap" Style="{DynamicResource TextBlockDefault}" TextTrimming="CharacterEllipsis" 
+                           Text="{Binding Date}" Margin="0,6,0,0" HorizontalAlignment="Left"/>
+                                            </StackPanel>
+                                        </hc:Card.Footer>
+                                    </hc:Card>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </ScrollViewer>
     </Grid>
 </Page>

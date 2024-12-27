@@ -9,7 +9,16 @@ namespace BingWallPaper.Server.Database.Extension
             return new WallPaperDetailDto()
             {
                 Id = wallpaper.Id,
-                HDImage = wallpaper.UrlBase,
+                Desc = wallpaper.Desc,
+                Date = wallpaper.Date,
+            };
+        }
+
+        public static WallPaperDetailDto ToDetailDto_cn(this WallpaperCn wallpaper)
+        {
+            return new WallPaperDetailDto()
+            {
+                Id = wallpaper.Id,
                 Desc = wallpaper.Desc,
                 Date = wallpaper.Date,
             };

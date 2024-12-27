@@ -5,8 +5,132 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BingWallPaper.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        Style="{StaticResource for_noresize_window}"
+        MouseMove="Border_MouseMove"
+        Title="MainWindow" Height="450" Width="940">
     <Grid>
-        
+        <Border Margin="5" Background="{DynamicResource DefaultBackgroundColor}" CornerRadius="5" Name="render">
+            <Border.Effect>
+                <DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="20" 
+                                  Opacity="0.25" Color="#FF5B5B5B"></DropShadowEffect>
+            </Border.Effect>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="20"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid MouseMove="Border_MouseMove" Grid.ColumnSpan="2" Background="Transparent">
+                <Label BorderThickness="0"
+                       Cursor="Hand"
+                       ToolTip="最小化"
+                       Margin="0 10 50 0"
+                       Background="Transparent"
+                       HorizontalAlignment="Right" 
+                       MouseLeftButtonDown="Label_MouseLeftButtonDown">
+                    <Path Data="{StaticResource WindowMinGeometry}" 
+                          SnapsToDevicePixels="True"
+                          Height="15"
+                          Width="15"
+                          Stroke="{StaticResource PrimaryBrush}" Stretch="Uniform" 
+                          Fill="{StaticResource PrimaryBrush}"/>
+                </Label>
+                <Label BorderThickness="0"
+                       Cursor="Hand"
+                       ToolTip="关闭到托盘"
+                       Margin="0 10 5 0"
+                       Background="Transparent"
+                       HorizontalAlignment="Right" MouseLeftButtonDown="Label_MouseLeftButtonDown_1">
+                    <Path Data="{StaticResource CloseGeometry}" 
+                          SnapsToDevicePixels="True"
+                          Height="15"
+                          Stroke="{StaticResource PrimaryBrush}" Stretch="Uniform" 
+                          Fill="{StaticResource PrimaryBrush}"/>
+                </Label>
+            </Grid>
+
+
+            <hc:Card Grid.Row="1" 
+                     Grid.RowSpan="2"
+                     Grid.Column="0" 
+                     Background="#eee" 
+                     Effect="{DynamicResource EffectShadow2}"
+                     BorderThickness="0">
+                <ListBox Background="{DynamicResource DefaultCardBackgroundColor}"  BorderThickness="0" >
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBoxItem Height="50" Width="55" IsSelected="True" x:Name="item">
+                        <ListBoxItem.Style>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBoxItem.Style>
+                        <Label BorderThickness="0"
+                               Padding="0"
+                               Cursor="Hand"
+                               ToolTip="主页"
+                               Background="Transparent"
+                               VerticalContentAlignment="Center"
+                               Grid.Column="1">
+                            <Path Data="{StaticResource mainpage}" 
+                                  SnapsToDevicePixels="True"
+                                  Height="20"
+                                  Width="35"
+                                  Stroke="{Binding ElementName=item,Path=Foreground}" Stretch="Uniform" 
+                                  Fill="{Binding ElementName=item,Path=Foreground}"/>
+                        </Label>
+                    </ListBoxItem>
+
+                    <ListBoxItem Height="50" Width="55" Margin="-1 20 0 0" x:Name="item1">
+                        <ListBoxItem.Style>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter Property="Foreground" Value="{StaticResource PrimaryBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBoxItem.Style>
+                        <Label BorderThickness="0"
+                               Cursor="Hand"
+                               ToolTip="设置"
+                               Padding="0"
+                               Background="Transparent"
+                               VerticalContentAlignment="Center"
+                               Grid.Column="1">
+                            <Path Data="{StaticResource setting}" 
+                                  SnapsToDevicePixels="True"
+                                  Height="20"
+                                  Width="35"
+                                  Stroke="{Binding ElementName=item,Path=Foreground}" Stretch="Uniform" 
+                                  Fill="{Binding ElementName=item,Path=Foreground}"/>
+                        </Label>
+                    </ListBoxItem>
+                </ListBox>
+            </hc:Card>
+            <Frame Grid.Column="1" Grid.Row="1" BorderThickness="0" Content="{Binding CurrentPage}">
+
+            </Frame>
+        </Grid>
     </Grid>
 </Window>

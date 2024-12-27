@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace BingWallPaper.WPF
 {
-    internal class MainWindowViewModel : ObservableObject
+    public class MainWindowViewModel : ObservableObject
     {
         private Page _currentPage;
         public Page CurrentPage

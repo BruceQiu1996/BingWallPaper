@@ -1,8 +1,7 @@
-﻿using BingWallPaper.WPF.Pages;
+﻿using BingWallPaper.WPF.Helpers;
+using BingWallPaper.WPF.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Configuration;
-using System.Data;
 using System.IO;
 using System.Windows;
 
@@ -27,6 +26,8 @@ namespace BingWallPaper.WPF
                 service.AddSingleton<MainWindowViewModel>();
                 service.AddSingleton<MainPage>();
                 service.AddSingleton<MainPageViewModel>();
+
+                service.AddSingleton<HttpRequest>();
             });
 
             host = builder.Build();
